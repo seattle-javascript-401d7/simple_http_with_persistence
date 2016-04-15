@@ -16,7 +16,6 @@ function routes(request, response) {
     };
     response.writeHead(200, { 'Content-Type': 'application/json' });
     response.write(parseThoughtsUgly()());
-    console.log(response);
     return response.end();
   }
 

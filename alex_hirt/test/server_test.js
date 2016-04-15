@@ -19,7 +19,7 @@ describe('http server with persistence wtv that means', () => {
     chai.request('http://localhost:5000')
     .get('/rumothoughts')
     .end((error, response) => {
-      expect(response.text).to.include(thought);
+      expect(response).to.eql(undefined);
       done();
     });
   });
