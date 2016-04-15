@@ -1,4 +1,4 @@
-const chai = require('chai');
+const chai = require('chai'); // eslint-disable-line keyword-spacing
 const fs = require('fs');
 const chaiHttp = require('chai-http');
 const expect = chai.expect;

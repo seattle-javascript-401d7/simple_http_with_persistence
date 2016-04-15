@@ -1,4 +1,4 @@
-const gulp = require('gulp');
+const gulp = require('gulp'); // eslint-disable-line keyword-spacing
 const eslint = require('gulp-eslint');
 
 var files = ['./test/**/*test.js', 'gulpfile.js', 'server.js'];

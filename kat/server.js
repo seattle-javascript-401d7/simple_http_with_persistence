@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require('fs'); // eslint-disable-line keyword-spacing
 const http = require('http');
 
 
