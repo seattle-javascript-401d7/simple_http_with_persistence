@@ -29,4 +29,4 @@ gulp.task('watch', () => {
 
 gulp.task('lint', ['lint:test', 'lint:nontest']);
 gulp.task('mochaTest', ['mocha:test']);
-gulp.task('default', ['lint', 'mochaTest', 'watch']);
+gulp.task('default', ['lint', 'mochaTest']);
