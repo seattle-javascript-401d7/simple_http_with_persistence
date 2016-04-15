@@ -22,12 +22,16 @@ function startServer(directory, cb) {
       res.write('saved file ' + nextFile + '.json');
       return res.end();
     }
+    res.writeHead(404, { 'Content-Type': 'text/plain' });
+    res.write('404 - Page not found');
+    return res.end();
   });
 
   server.listen('3000', () => {
     process.stdout.write('server up\n');
   });
   cb();
+  return server;
 }
 
 module.exports = startServer;

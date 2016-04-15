@@ -4,12 +4,13 @@ const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 const expect = chai.expect;
 const request = chai.request;
-const server = require(__dirname + '/../server');
+const startServer = require(__dirname + '/../server');
+var server;
 
 describe('the http server', () => {
   before((done) => {
     const testDir = __dirname + '/../notes_test';
-    server(testDir, done);
+    server = startServer(testDir, done);
   });
   after((done) => {
     server.close(() => {
@@ -31,12 +32,17 @@ describe('the http server', () => {
     var nextFile = fs.readdirSync(__dirname + '/../notes_test').length + 1;
     request('localhost:3000')
     .post('/notes')
-    .send('{ "noteBody": "Hello World" }')
+    .send({ noteBody: 'Hello World' })
     .end((err, res) => {
       expect(err).to.eql(null);
       expect(res).to.have.status(200);
       expect(res.text).to.eql('saved file ' + nextFile + '.json');
-      done();
+      fs.readFile(__dirname + '/../notes_test/' + nextFile + '.json', (err, data) => {
+        if (err) throw err;
+        var parsed = JSON.parse(data);
+        expect(parsed).to.eql({ noteBody: 'Hello World' });
+        done();
+      });
     });
   });
   it('should 404 on bad requests', (done) => {
