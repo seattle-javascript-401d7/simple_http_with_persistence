@@ -18,5 +18,9 @@
   "bugs": {
     "url": "https://github.com/bonecrushereb/simple_http_with_persistence/issues"
   },
-  "homepage": "https://github.com/bonecrushereb/simple_http_with_persistence#readme"
+  "homepage": "https://github.com/bonecrushereb/simple_http_with_persistence#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^2.0.1"
+  }
 }
