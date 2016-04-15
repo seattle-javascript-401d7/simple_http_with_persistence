@@ -1,20 +1,24 @@
+const fs = require('fs');
 const http = require('http');
 
-const Router = require(__dirname + '/router');
 
-var routes = new Router();
-routes.get('/someurl', function(req, res) {
-  res.writeHead(200, {
-    'Content-Type': 'application/json'
+const server = module.exports = http.createServer((req, res) => {
+  if (req.method === 'GET' && req.url === '/notes') {
+    res.writeHead(200, {'Content-Type': 'application/json'});
+    res.write('list of files within data');
+    return res.end();
+  }
+  if (req.method === 'POST' && req.url === '/notes') {
+    res.on('data', (chunk) => {
+    res.writeHead(200, {'Content-Type': 'application/json'});
+    res.write();
+    return res.end();
   });
-  res.write('{ "msg" : "hello from url"}');
-  res.end()
+  return;
+}
+res.writeHead(418, { 'Content-Type': 'text/plain' });
+res.write('418 Error, I am a teapot');
+res.end();
 });
 
-routes.get('/anotherurl', (req, res) => {
-  res.writeHead(200);
-  res.write('another url');
-  res.end()
-})
-
-http.createServer(routes.route()).listen(3000, () => console.log('server up'))
+server.listen(3000, () => process.stdout.write('Server Live\n'));
