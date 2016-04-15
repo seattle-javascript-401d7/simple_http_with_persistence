@@ -4,6 +4,8 @@ const fs = require('fs');
 var slothbear = module.exports = exports = {};
 
 slothbear.server = function(port, savePath) {
+  if (!fs.existsSync(savePath)) fs.mkdirSync(savePath);
+
   return http.createServer((req, res) => {
     // post json data to new json file in /data (0 based index filename .json)
     if (req.method === 'POST' && req.url === '/notes') {
