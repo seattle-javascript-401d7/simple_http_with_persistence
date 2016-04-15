@@ -54,7 +54,10 @@ slothbear.server = function(port, savePath) {
       });
     }
     // send an error for all other routes
-    if (!req.url.startsWith('/notes')) {
+    if (!req.url.startsWith('/notes' ||
+        req.method === 'DELETE' ||
+        req.method === 'PUT' ||
+        req.method === 'PATCH')) {
       res.writeHead(404, { 'Content-Type': 'text/plain' });
       res.write('404: delicious ants not found');
       return res.end();

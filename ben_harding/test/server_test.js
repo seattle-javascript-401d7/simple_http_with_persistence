@@ -61,6 +61,13 @@ describe('slothbear server', () => {
   });
 
 
-  it('should 404 on bad requests');
-
+  it('should 404 on bad requests', (done) => {
+    request('localhost:5000')
+      .get('/badroute')
+      .end((err, res) => { // eslint-disable-line handle-callback-err
+        expect(res).to.have.status(404);
+        expect(res.text).to.eql('404: delicious ants not found');
+        done();
+      });
+  });
 });
