@@ -11,7 +11,7 @@ Enter 'node server.js' at the command line.
 Open a browser window and enter:
 
 ###localhost:3000/list
-this should return a list of the contents in the data folder
+this should return a list of files in the data folder
 
 ##POST a JSON file
 
@@ -25,12 +25,16 @@ This should add a new file to the data folder.
 
 ##Gulp Testing
 
-navigate to the root project folder and enter at the command line
+navigate to the root project folder and enter at the command line:
 
 ###gulp
 to launch mocha testing, linter testing and gulp watch
 
 ###gulp lint
-for linter testing only
+for linter only
 
 ###gulp mochaTest
+for mocha test only
+
+###gulp watch
+to monitor file changes
