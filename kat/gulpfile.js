@@ -1,7 +1,7 @@
 const gulp = require('gulp');
 const eslint = require('gulp-eslint');
 
-var files = ['./data/**/*.json', './test/**/*test.js', 'gulpfile.js', 'server.js'];
+var files = ['./test/**/*test.js', 'gulpfile.js', 'server.js'];
 
 
 gulp.task('lint', () => {
