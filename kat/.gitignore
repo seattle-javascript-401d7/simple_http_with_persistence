@@ -4,4 +4,4 @@ node_modules
 db/**
 .DS_Store
 .DS_Store?
-data/
+*.json
