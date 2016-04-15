@@ -6,7 +6,7 @@ var list;
 var router = new Router()
   .get('/notes', (req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/html' });
-    fs.readdir('/data', (err, data) => {
+    fs.readdir(__dirname + '/data', (err, data) => {
       if (err) return err;
 
       return list = data;
