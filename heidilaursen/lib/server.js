@@ -1,10 +1,18 @@
 const http = require('http');
+const Router = require(__dirname + '/lib/router');
 
-const server = module.exports = http.createServer((req, res) => {
+var router = new Router()
+.get('/someurl', (req, res) => {
   res.writeHead(200, {
-    debugger;
     'Content-Type': 'application/json'
   });
-  res.write('{'msg': 'hello/world\n'}')
+  res.write('{"msg" : "hello from some url"}');
   res.end();
-}).listen(3000, () => console.log('server up'));
+})
+.get('/anotherurl', (req, res) => {
+  res.writeHead(200);
+  res.write('another url');
+  res.end();
+});
+
+http.createServer(router.route()).listen(3000, () => console.log('server up'));
