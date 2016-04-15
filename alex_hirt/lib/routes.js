@@ -41,14 +41,12 @@ function routes(request, response) {
 
   if (request.url === '/rumothoughts' && request.method === 'POST') {
     request.on('data', (data) => {
-      console.log(data);
       var counter = 0;
       var saveThought = function() {
         counter += 1;
         fs.writeFile(__dirname + '/../data/thought' + counter + '.json', data, (error) => {
           if (error) throw error;
         });
-        console.log('written and new thought');
       };
       saveThought();
       response.writeHead(200, { 'Content-Type': 'text/html' });
