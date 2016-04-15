@@ -1,7 +1,7 @@
 const http = require('http');
 const fs = require('fs');
 
-var slothbearServer = http.createServer((req, res) => {
+var slothbearServer = module.exports = exports = http.createServer((req, res) => {
   // post json data to new json file in /data (0 based index filename .json)
   if (req.method === 'POST' && req.url === '/notes') {
     fs.readdir(__dirname + '/data', (err, files) => {
@@ -29,21 +29,31 @@ var slothbearServer = http.createServer((req, res) => {
     });
   }
   // return note from the file at /data/_filename_.json
+  // I don't think this was a part of the assignment, but it seemed
+  // like the logical thing to do.
   if (req.method === 'GET' && req.url.startsWith('/notes/')) {
     var fileName = req.url.split('/')[2];
     if (fileName.split('.')[1] !== 'json') {
       fileName += '.json';
     }
-    fs.readFile(__dirname + '/data/' + fileName, (err, data) => {
-      if (err) {
-        res.writeHead(404, { 'Content-Type': 'text/plain' });
-        res.write('Some error');
-        return res.end();
-      }
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.write(data);
-      res.end();
+    var readStream = fs.createReadStream(__dirname + '/data/' + fileName);
+    var readData = '';
+    readStream.on('data', (data) => {
+      readData += data;
     });
+
+    readStream.on('end', () => {
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      console.log(readData);
+      res.write(readData);
+      return res.end();
+    });
+  }
+  // send an error for all other routes
+  if (!req.url.startsWith('/notes')) {
+    res.writeHead(404, { 'Content-Type': 'text/plain' });
+    res.write('404: delicious ants not found');
+    return res.end();
   }
 });
 
