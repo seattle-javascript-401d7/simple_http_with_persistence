@@ -1,9 +1,11 @@
 const chai = require('chai');
+const fs = require('fs');
 const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 const expect = chai.expect;
 const request = chai.request;
 const server = require(__dirname + '/../lib/server');
+const dir = __dirname + '/../notes';
 
 describe('The server', () => {
   after((done) => {
@@ -23,12 +25,13 @@ describe('The server', () => {
   });
 
   it('Should accept GET requests from /notes', (done) => {
+    var files = fs.readdirSync(dir);
     request('localhost:3000')
     .get('/notes')
     .end((err, res) => {
       expect(err).to.eql(null);
       expect(res.status).to.eql(200);
-      expect(res.text).to.eql('<h1>Notes</h1>');
+      expect(res.text).to.eql(files.toString());
       done();
     });
   });
@@ -36,11 +39,11 @@ describe('The server', () => {
   it('Should accept POST requests from /notes', (done) => {
     request('localhost:3000')
     .post('/notes')
-    .send({ 'note': 'notes' })
+    .send({ 'Hello': 'from json' })
     .end((err, res) => {
       expect(err).to.eql(null);
       expect(res.status).to.eql(200);
-      expect(res.text).to.eql('note notes');
+      expect(res.text).to.include('file created');
       done();
     });
   });

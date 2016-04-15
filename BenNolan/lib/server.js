@@ -8,17 +8,18 @@ if (!fs.existsSync(dir)) {
 
 const server = module.exports = http.createServer((req, res) => {
   if (req.method === 'GET' && req.url === '/notes') {
-    res.writeHead(200, { 'Content-Type': 'text/html' });
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
     var files = fs.readdirSync(dir);
-    res.write('' + files);
+    res.write(files.toString());
     return res.end();
   }
 
   if (req.method === 'POST' && req.url === '/notes') {
-    const text = fs.createWriteStream(__dirname + '/../notes/note_' + Date.now() + '.txt');
+    var nextFile = fs.readdirSync(dir).length + 1;
+    const text = fs.createWriteStream(__dirname + '/../notes/note_' + nextFile + '.txt');
     req.pipe(text);
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.write('{ "Hello": "from json"}');
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.write('file created');
     return res.end();
   }
 
