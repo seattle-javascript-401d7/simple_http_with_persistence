@@ -1,3 +1,4 @@
+const fs = require('fs');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
@@ -6,6 +7,10 @@ const request = chai.request;
 const server = require(__dirname + '/../server');
 
 describe('the http server', () => {
+  before((done) => {
+    const testDir = __dirname + '/../notes_test';
+    server(testDir, done);
+  });
   after((done) => {
     server.close(() => {
       done();
@@ -17,7 +22,8 @@ describe('the http server', () => {
     .end((err, res) => {
       expect(err).to.eql(null);
       expect(res).to.have.status(200);
-      expect(res.text).to.eql('something');
+      var files = fs.readdirSync(__dirname + '/../notes_test').toString();
+      expect(res.text).to.eql(files);
       done();
     });
   });
@@ -28,7 +34,7 @@ describe('the http server', () => {
     .end((err, res) => {
       expect(err).to.eql(null);
       expect(res).to.have.status(200);
-      expect(res.text).to.eql('File Created');
+      expect(res.text).to.eql('testfile.json');
       done();
     });
   });
