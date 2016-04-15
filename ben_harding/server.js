@@ -29,7 +29,11 @@ slothbear.server = function(port, savePath) {
     // return list of files in /data
     if (req.method === 'GET' && req.url === '/notes') {
       fs.readdir(savePath, (err, files) => {
-        if (err) return console.log(err);
+        if (err) {
+          res.writeHead(404, { 'Content-Type': 'text/plain' });
+          res.write('Some error');
+          return res.end();
+        }
         res.writeHead(200, { 'Content-Type': 'text/plain' });
         res.write('files stored: ' + files.join(', '));
         return res.end();
@@ -52,6 +56,12 @@ slothbear.server = function(port, savePath) {
       readStream.on('end', () => {
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.write(readData);
+        return res.end();
+      });
+
+      readStream.on('error', () => {
+        res.writeHead(404, { 'Content-Type': 'text/plain' });
+        res.write('File not found');
         return res.end();
       });
     }
