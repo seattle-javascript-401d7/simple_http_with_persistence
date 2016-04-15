@@ -4,7 +4,7 @@ const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 const expect = chai.expect;
 const request = chai.request;
-const startServer = require(__dirname + '/../server');
+const startServer = require(__dirname + '/../lib/server');
 var server;
 
 describe('the http server', () => {

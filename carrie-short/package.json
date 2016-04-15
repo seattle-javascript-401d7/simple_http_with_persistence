@@ -2,7 +2,7 @@
   "name": "carrie-short",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "index.js",
   "directories": {
     "test": "test"
   },
@@ -16,6 +16,9 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "chai-http": "^2.0.1",
+    "gulp": "^3.9.1",
+    "gulp-eslint": "^2.0.0",
+    "gulp-mocha": "^2.2.0",
     "superagent-cli": "^2.1.0"
   }
 }

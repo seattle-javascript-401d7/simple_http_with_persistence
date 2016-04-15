@@ -2,7 +2,6 @@ const http = require('http');
 const fs = require('fs');
 
 function startServer(directory, cb) {
-  console.log('server started');
   const dir = directory || __dirname + '/../notes';
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir);
@@ -30,7 +29,7 @@ function startServer(directory, cb) {
   server.listen('3000', () => {
     process.stdout.write('server up\n');
   });
-  cb();
+  if (cb && typeof cb === 'function') cb();
   return server;
 }
 
