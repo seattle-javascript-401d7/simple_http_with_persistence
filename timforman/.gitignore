@@ -30,6 +30,7 @@ node_modules/**
 *.log
 *.sql
 *.sqlite
+**/data/**
 ​
 # OS generated files #
 ######################
