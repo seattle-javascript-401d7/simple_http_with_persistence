@@ -3,7 +3,7 @@ const Router = require(__dirname + '/lib/router.js');
 const fs = require('fs');
 var list;
 
-var router = module.exports = exports = new Router()
+var router = new Router()
   .get('/notes', (req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/html' });
     fs.readdir('/data', (err, data) => {
@@ -26,6 +26,7 @@ var router = module.exports = exports = new Router()
     res.end();
   });
 
-http.createServer(router.route()).listen(7000, () => {
+// eslint-disable-next-line no-unused-vars
+var server = module.exports = exports = http.createServer(router.route()).listen(7000, () => {
   console.log('server listening on port 7000');
 });
