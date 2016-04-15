@@ -6,6 +6,16 @@ const request = chai.request;
 require(__dirname + '/../server');
 
 describe('http with storage', () => {
+beforeEach('post something to get', ()=> {
+  // console.log('before')
+  request('localhost:3000')
+  .post('/greeting')
+  .send({ 'hello':'Lorem ipsum' })
+  .end();
+
+});
+
+
   it('should accept GET requests to /notes', (done) => {
     request('localhost:3000')
     .get('/notes')
@@ -30,7 +40,7 @@ describe('http with storage', () => {
 it('should accept POST requests', (done) => {
   request('localhost:3000')
   .post('/greeting')
-  .send({ 'hello':'world' })
+  .send( { 'hello':'world' } )
   .end((err, res) => {
     expect(err).to.eql(null);
     expect(res).to.have.status(200);

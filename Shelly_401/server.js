@@ -9,14 +9,12 @@ if(req.method === 'GET' && req.url === '/notes'){
   const notes = require(__dirname + '/notes.json');
   var note = notes.hello;
   res.write(note);
-console.log("the note " + note);
 return res.end();
 }
 
 if(req.method === 'POST' && req.url === '/notes'){
   console.log('post here');
   req.on('data', (data) => {
-    console.log('data here');
     const keep = fs.createWriteStream(__dirname + '/notes.json');
     keep.write(data);
       res.writeHead(200, { 'Content-type': 'text/plain'} );
