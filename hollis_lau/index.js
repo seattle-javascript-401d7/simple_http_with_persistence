@@ -1,1 +1,3 @@
-module.exports = require("./server");
+var server = module.exports = require("./server");
+
+server(3000, __dirname + "/data");
