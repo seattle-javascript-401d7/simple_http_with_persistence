@@ -17,8 +17,9 @@ var slothbearServer = http.createServer((req, res) => {
         return res.end();
       });
     });
+    return;
   }
-  // list number of json files in /data
+  // list number of files in /data
   if (req.method === 'GET' && req.url === '/notes') {
     fs.readdir(__dirname + '/data', (err, files) => {
       if (err) return console.log(err);
@@ -29,7 +30,20 @@ var slothbearServer = http.createServer((req, res) => {
   }
   // return note from the file at /data/_filename_.json
   if (req.method === 'GET' && req.url.startsWith('/notes/')) {
-    return res.end();
+    var fileName = req.url.split('/')[2];
+    if (fileName.split('.')[1] !== 'json') {
+      fileName += '.json';
+    }
+    fs.readFile(__dirname + '/data/' + fileName, (err, data) => {
+      if (err) {
+        res.writeHead(404, { 'Content-Type': 'text/plain' });
+        res.write('Some error');
+        return res.end();
+      }
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.write(data);
+      res.end();
+    });
   }
 });
 
