@@ -15,19 +15,35 @@ describe('http server with persistence wtv that means', () => {
   });
 
   it('should GET from /rumothoughts a list of json obj', (done) => {
-    var thought = { 'thought': 'rala is nice' };
+    var thoughtFile = fs.readdirSync(__dirname + '/../data');
+    var folder = thoughtFile;
+    var thought;
     chai.request('http://localhost:5000')
     .get('/rumothoughts')
     .end((error, response) => {
-      expect(response).to.eql(undefined);
+      for (var i = 0; i < folder.length; i++) {
+        thought = fs.readFileSync(__dirname + '/../data/' + folder[i]);
+        expect(response).to.include(thought);
+      }
+      expect(response.status).to.eql(200);
       done();
     });
   });
 
+  // it('should GET from /rumothoughts a list of json obj', (done) => {
+  //   chai.request('http://localhost:5000')
+  //   .get('/rumothoughts/pretty')
+  //   .end((error, response) => {
+  //     expect(response.status).to.eql(200);
+  //
+  //     done();
+  //   });
+  // });
+  //
   it('should POST to /rumothoughts with a new thought1.json', (done) => {
     var thoughtsBefore = fs.readdirSync(__dirname + '/../data/');
     var h1Response = '<h1>Rumo is thinking! YAY for thoughts!</h1>';
-    var thought = { 'thought': 'rala is nice' };
+    var thought = '{"thought":"rala is nice"}';
     chai.request('http://localhost:5000')
     .post('/rumothoughts')
     .send(thought)

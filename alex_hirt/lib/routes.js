@@ -3,19 +3,23 @@ const fs = require('fs');
 function routes(request, response) {
   if (request.url === '/rumothoughts' && request.method === 'GET') {
     var parseThoughtsUgly = function() {
-      var thoughts = '';
       var rumoThoughts = fs.readdirSync(__dirname + '/../data');
       var folder = rumoThoughts;
       return function() {
         for (var i = 0; i < folder.length; i++) {
           var rawThought = fs.readFileSync(__dirname + '/../data/' + folder[i]);
-          thoughts += rawThought + '\n';
+          var regularThought = JSON.parse(rawThought));
+        //     if (i === folder.length - 1) {
+        //       response.write(rawThought);
+        //     } else {
+        //       response.write(rawThought + ',');
+        //     }
         }
-        return thoughts;
+        return;
       };
     };
     response.writeHead(200, { 'Content-Type': 'application/json' });
-    response.write(parseThoughtsUgly()());
+    parseThoughtsUgly()();
     return response.end();
   }
 
