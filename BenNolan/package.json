@@ -1,0 +1,22 @@
+{
+  "name": "y",
+  "version": "1.0.0",
+  "description": "A persistant Http Server",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bonecrushereb/simple_http_with_persistence.git"
+  },
+  "author": "bonecrushereb@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bonecrushereb/simple_http_with_persistence/issues"
+  },
+  "homepage": "https://github.com/bonecrushereb/simple_http_with_persistence#readme"
+}
