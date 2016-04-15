@@ -10,33 +10,38 @@ require(__dirname + '/../server.js');
 describe('the HTTP server', () => {
   var listBefore;
   var listAfter;
+  var fileLengthBefore;
+  var printFileNames;
   before(() => {
-    var listBefore = fs.readdirSync(__dirname + '/../data/');
-    listBefore = listBefore.length + 1;
+    listBefore = fs.readdirSync(__dirname + '/../data/');
+    fileLengthBefore = listBefore.length + 1;
   });
 
 it('should accept a GET request to /name', (done) => {
-  console.log('listBefore: ' + listBefore);
   request('localhost:3000')
   .get('/notes')
   .end((err, response) => {
     expect(err).to.eql(null);
     expect(response.status).to.eql(200);
-    // expect(response.text).to.eql('lastfile add to string');
+    expect(response.text.split(',').length).to.eql(listBefore.length);
     done();
   });
 });
 it('should allow POST requests to /name', (done) => {
-  console.log('listBefore: ' + listBefore);
+  listAfter = fs.readdirSync(__dirname + '/../data/');
+  listAfter = listAfter.length;
   request('localhost:3000')
   .post('/notes')
-  .send({ 'msg': 'Everytime I send this a new file is created' })
+  .send("{ 'msg': 'Everytime I send this a new file is created' }")
   .end((err, response) => {
     listAfter = fs.readdirSync(__dirname + '/../data/');
     listAfter = listAfter.length;
+    var newfileContent = fs.readFileSync(__dirname + '/../data/' + listAfter + '.json');
+    var jsonBuf = new Buffer("{ 'msg': 'Everytime I send this a new file is created' }");
     expect(err).to.eql(null);
     expect(response.status).to.eql(200);
-    expect(listBefore).to.eql(listAfter);
+    expect(fileLengthBefore).to.eql(listAfter);
+    expect(newfileContent).to.eql(jsonBuf);
     done();
   });
   });
