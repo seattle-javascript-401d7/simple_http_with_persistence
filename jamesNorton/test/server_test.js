@@ -3,9 +3,19 @@ const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 const expect = chai.expect;
 const request = chai.request;
-require(__dirname + '/../server')
+const fs = require('fs');
+require(__dirname + '/../server');
+
 
 describe('Server Tests!', () => {
+  var fileList;
+  var fileNumber;
+
+  beforeEach(() => {
+    fileList = fs.readdirSync(__dirname + '/../data/');
+    testFileNumber = fileList.length + 2;
+  });
+
   it('should accept GET requests to /notes without error', (done) => {
     request('localhost:3000')
     .get('/notes')
@@ -23,7 +33,7 @@ describe('Server Tests!', () => {
     .end((err, res) => {
       expect(err).to.eql(null);
       expect(res).to.have.status(200);
-      expect(res.text).to.eql('thanks for submitting!');
+      expect(res.text).to.eql('thanks for submitting! Your file is named ' + testFileNumber + '.json\n');
       done();
     });
   });
