@@ -28,13 +28,14 @@ describe('the http server', () => {
     });
   });
   it('should accept json post requests to /notes and save the body in a file', (done) => {
+    var nextFile = fs.readdirSync(__dirname + '/../notes_test').length + 1;
     request('localhost:3000')
     .post('/notes')
-    .send({ 'noteBody': 'Hello World' })
+    .send('{ "noteBody": "Hello World" }')
     .end((err, res) => {
       expect(err).to.eql(null);
       expect(res).to.have.status(200);
-      expect(res.text).to.eql('testfile.json');
+      expect(res.text).to.eql('saved file ' + nextFile + '.json');
       done();
     });
   });
