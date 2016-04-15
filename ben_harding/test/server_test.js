@@ -8,7 +8,7 @@ var slothbearServer = require(__dirname + '/../server');
 
 describe('slothbear server', () => {
   var oldNumFiles = 0;
-  beforeEach((done) => {
+  before((done) => {
     oldNumFiles = fs.readdirSync(__dirname + '/../data').length;
     done();
   });
@@ -45,7 +45,19 @@ describe('slothbear server', () => {
       });
   });
 
-  it('should return the correstponding file from when requested from /notes');
+  it('should return the corresponding file from when requested from /notes', (done) => {
+    var fileNumber = 0;
+    request('localhost:3000')
+      .get('/notes/' + fileNumber)
+      .end((err, res) => {
+        var fileData = fs.readFileSync(__dirname + '/../data/' + fileNumber + '.json');
+        expect(err).to.eql(null);
+        expect(res).to.have.status(200);
+        expect(res.text).to.eql(fileData.toString());
+        done();
+      });
+  });
+
 
   it('should 404 on bad requests');
 

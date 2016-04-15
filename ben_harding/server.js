@@ -10,7 +10,9 @@ var slothbearServer = module.exports = exports = http.createServer((req, res) =>
         res.write('Some error');
         return res.end();
       }
+
       req.pipe(fs.createWriteStream(__dirname + '/data/' + files.length + '.json'));
+
       req.on('end', () => {
         res.writeHead(200, { 'Content-Type': 'text/plain' });
         res.write('file stored as ' + files.length + '.json');
@@ -19,7 +21,7 @@ var slothbearServer = module.exports = exports = http.createServer((req, res) =>
     });
     return;
   }
-  // list number of files in /data
+  // return list of files in /data
   if (req.method === 'GET' && req.url === '/notes') {
     fs.readdir(__dirname + '/data', (err, files) => {
       if (err) return console.log(err);
@@ -33,18 +35,17 @@ var slothbearServer = module.exports = exports = http.createServer((req, res) =>
   // like the logical thing to do.
   if (req.method === 'GET' && req.url.startsWith('/notes/')) {
     var fileName = req.url.split('/')[2];
-    if (fileName.split('.')[1] !== 'json') {
-      fileName += '.json';
-    }
+    if (fileName.split('.')[1] !== 'json') fileName += '.json';
+
     var readStream = fs.createReadStream(__dirname + '/data/' + fileName);
     var readData = '';
+
     readStream.on('data', (data) => {
       readData += data;
     });
 
     readStream.on('end', () => {
       res.writeHead(200, { 'Content-Type': 'application/json' });
-      console.log(readData);
       res.write(readData);
       return res.end();
     });
