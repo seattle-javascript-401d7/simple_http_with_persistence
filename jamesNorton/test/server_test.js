@@ -11,7 +11,7 @@ describe('Server Tests!', () => {
   var fileList;
   var fileNumber;
 
-  beforeEach(() => {
+  before(() => {
     fileList = fs.readdirSync(__dirname + '/../data/');
     testFileNumber = fileList.length + 2;
   });
@@ -26,7 +26,7 @@ describe('Server Tests!', () => {
     });
   });
 
-  it('should make a POST request to /notes', (done) => {
+  it('should make a POST request to /notes and generate new file', (done) => {
     request('localhost:3000')
     .post('/notes')
     .send({ "name": "maverick"})
