@@ -16,6 +16,7 @@ function routes(request, response) {
     };
     response.writeHead(200, { 'Content-Type': 'application/json' });
     response.write(parseThoughtsUgly()());
+    console.log(response);
     return response.end();
   }
 
@@ -40,8 +41,9 @@ function routes(request, response) {
   }
 
   if (request.url === '/rumothoughts' && request.method === 'POST') {
+    var numThoughts = fs.readdirSync(__dirname + '/../data');
+    var counter = numThoughts.length;
     request.on('data', (data) => {
-      var counter = 0;
       var saveThought = function() {
         counter += 1;
         fs.writeFile(__dirname + '/../data/thought' + counter + '.json', data, (error) => {
@@ -50,7 +52,7 @@ function routes(request, response) {
       };
       saveThought();
       response.writeHead(200, { 'Content-Type': 'text/html' });
-      response.write('<h1>Received Thought</h1>');
+      response.write('<h1>Rumo is thinking! YAY for thoughts!</h1>');
       return response.end();
     });
     return;

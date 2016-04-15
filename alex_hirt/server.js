@@ -11,3 +11,5 @@ const server = http.createServer((request, response) => {
 server.listen(port, () => {
   process.stdout.write('Server listening on localhost:' + port + '\n');
 });
+
+module.exports = server;
