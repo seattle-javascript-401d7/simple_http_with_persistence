@@ -1,0 +1,29 @@
+{
+  "name": "persistentdata",
+  "version": "1.0.0",
+  "description": "Create a Persistent HTTP server that can POST up notes in JSON format to *localhost:3000/notes* and show us the files name that we have created using this method.",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "gulp": "^3.9.1",
+    "gulp-eslint": "^2.0.0",
+    "chai-http": "^2.0.1",
+    "mocha": "^2.4.5"
+  },
+  "scripts": {
+    "test": "mocha",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "http",
+    "server",
+    "codefellows"
+  ],
+  "author": "Katherine Beame",
+  "license": "MIT"
+}
