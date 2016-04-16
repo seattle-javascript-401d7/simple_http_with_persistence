@@ -2,13 +2,13 @@ const gulp = require('gulp');
 const eslint = require('gulp-eslint');
 const mocha = require('gulp-mocha');
 
-var files =['./lib/**/*.js', 'gulpfile.js'];
+var files = ['./lib/**/*.js', 'gulpfile.js'];
 gulp.task('lint:test', () => {
   return gulp
   .src('./test/**/*test.js')
-  .pipe(mocha({reporter: 'nyan'}))
+  .pipe(mocha( { reporter: 'nyan' } ))
   .pipe(eslint())
-  .pipe(eslint.format);
+  .pipe(eslint.format());
 });
 gulp.task('lint:nontest', () => {
   return gulp

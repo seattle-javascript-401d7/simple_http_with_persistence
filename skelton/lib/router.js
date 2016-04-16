@@ -5,7 +5,7 @@ const Router = module.exports = exports = function() {
     'PUT': {},
     'PATCH': {},
     'DELETE': {}
-  }
+  };
 };
 
 Router.prototype.get = function(routeName, cb) {
@@ -28,13 +28,14 @@ Router.prototype.delete = function(routeName, cb) {
   this.routes.DELETE[routeName] = cb;
   return this;
 };
-Router.prototype.route = function(){
+Router.prototype.route = function() {
   var routes = this.routes;
-  return function(req, res){
-    if(typeof routes[req.method][req.url] === 'function')
-      return routes[req.method][req.url](req,res);
+  return function(req, res) {
+    if (typeof routes[req.method][req.url] === 'function') {
+      return routes[req.method][req.url](req, res);
+    }
     res.writeHead(404);
     res.write('not found');
     res.end();
-  }
-}
+  };
+};
