@@ -1,3 +1,5 @@
+##Directory /skelton contains assignment files
+
 # simple_http_with_persistence
 
 
@@ -9,15 +11,15 @@ GET - A get request sent to /notes should respond with a list of all of the json
 
 Submit as a pull request to your own repository.
 
- 
 
- 
+
+
 
 Rubric:
 
 Handles REST requests: 3pts
 
-JSON storage: 3pts 
+JSON storage: 3pts
 
 Tests: 2pts
 
