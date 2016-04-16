@@ -14,32 +14,6 @@ describe('http server with persistence wtv that means', () => {
     });
   });
 
-  it('should GET from /rumothoughts a list of json obj', (done) => {
-    var thoughtFile = fs.readdirSync(__dirname + '/../data');
-    var folder = thoughtFile;
-    var thought;
-    chai.request('http://localhost:5000')
-    .get('/rumothoughts')
-    .end((error, response) => {
-      for (var i = 0; i < folder.length; i++) {
-        thought = fs.readFileSync(__dirname + '/../data/' + folder[i]);
-        expect(response).to.include(thought);
-      }
-      expect(response.status).to.eql(200);
-      done();
-    });
-  });
-
-  // it('should GET from /rumothoughts a list of json obj', (done) => {
-  //   chai.request('http://localhost:5000')
-  //   .get('/rumothoughts/pretty')
-  //   .end((error, response) => {
-  //     expect(response.status).to.eql(200);
-  //
-  //     done();
-  //   });
-  // });
-  //
   it('should POST to /rumothoughts with a new thought1.json', (done) => {
     var thoughtsBefore = fs.readdirSync(__dirname + '/../data/');
     var h1Response = '<h1>Rumo is thinking! YAY for thoughts!</h1>';
@@ -49,9 +23,34 @@ describe('http server with persistence wtv that means', () => {
     .send(thought)
     .end((error, response) => {
       var thoughtsAfter = fs.readdirSync(__dirname + '/../data/');
+      expect(error).to.eql(null);
       expect(response).to.have.status(200);
       expect(response.text).to.eql(h1Response);
       expect(thoughtsAfter.length).to.eql(thoughtsBefore.length + 1);
+      done();
+    });
+  });
+
+  it('should GET from /rumothoughts a list of json obj', (done) => {
+    var thoughtsBefore = fs.readdirSync(__dirname + '/../data/');
+    var folder = thoughtsBefore;
+    var allThoughts = {};
+    for (var i = 0; i < folder.length; i++) {
+      var rawThought = fs.readFileSync(__dirname + '/../data/' + folder[i]);
+      var regularThought = JSON.parse(rawThought);
+      allThoughts['thought' + i] = regularThought.thought;
+    }
+    var jsonThoughts = JSON.stringify(allThoughts);
+    fs.writeFileSync(__dirname + '/../master/allThoughts.json', jsonThoughts);
+    allThoughts = fs.readFileSync(__dirname + '/../master/allThoughts.json');
+    var thoughts = JSON.parse(allThoughts);
+    thoughts = JSON.stringify(thoughts);
+    chai.request('http://localhost:5000')
+    .get('/rumothoughts')
+    .end((error, response) => {
+      expect(error).to.eql(null);
+      expect(response.status).to.eql(200);
+      expect(response.text).to.eql(thoughts);
       done();
     });
   });

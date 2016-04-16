@@ -6,16 +6,17 @@ function routes(request, response) {
       var rumoThoughts = fs.readdirSync(__dirname + '/../data');
       var folder = rumoThoughts;
       return function() {
+        var allThoughts = {};
         for (var i = 0; i < folder.length; i++) {
           var rawThought = fs.readFileSync(__dirname + '/../data/' + folder[i]);
-          var regularThought = JSON.parse(rawThought));
-        //     if (i === folder.length - 1) {
-        //       response.write(rawThought);
-        //     } else {
-        //       response.write(rawThought + ',');
-        //     }
+          var regularThought = JSON.parse(rawThought);
+          allThoughts['thought' + i] = regularThought.thought;
         }
-        return;
+        var jsonThoughts = JSON.stringify(allThoughts);
+        fs.writeFile(__dirname + '/../master/allThoughts.json', jsonThoughts, (error) => {
+            if (error) throw error;
+        });
+        return response.write(jsonThoughts);
       };
     };
     response.writeHead(200, { 'Content-Type': 'application/json' });
