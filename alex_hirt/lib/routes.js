@@ -1,7 +1,16 @@
 const fs = require('fs');
 
 function routes(request, response) {
-  if (request.url === '/rumothoughts' && request.method === 'GET') {
+
+  if (request.url === '/' && request.method === 'GET') {
+
+    response.writeHead(200, { 'Content-Type': 'text/html' });
+    response.write('<h1>Welcome try:</h1>' +
+                   '<h2>localhost:5000/rumothoughts</h2>\n');
+    return response.end();
+
+  } else if (request.url === '/rumothoughts' && request.method === 'GET') {
+
     var parseThoughtsUgly = function() {
       var rumoThoughts = fs.readdirSync(__dirname + '/../data');
       var folder = rumoThoughts;
@@ -22,9 +31,9 @@ function routes(request, response) {
     response.writeHead(200, { 'Content-Type': 'application/json' });
     parseThoughtsUgly()();
     return response.end();
-  }
 
-  if (request.url === '/rumothoughts/pretty' && request.method === 'GET') {
+  } else if (request.url === '/rumothoughts/pretty' && request.method === 'GET') {
+
     var parseThoughtsPretty = function() {
       var thoughts = '';
       var rumoThoughts = fs.readdirSync(__dirname + '/../data');
@@ -42,9 +51,9 @@ function routes(request, response) {
     response.write('<h1>Today Rumo had these thoughts</h1>');
     response.write('<p>' + parseThoughtsPretty()() + '</p>');
     return response.end();
-  }
 
-  if (request.url === '/rumothoughts' && request.method === 'POST') {
+  } else if (request.url === '/rumothoughts' && request.method === 'POST') {
+
     var numThoughts = fs.readdirSync(__dirname + '/../data');
     var counter = numThoughts.length;
     request.on('data', (data) => {
@@ -60,6 +69,12 @@ function routes(request, response) {
       return response.end();
     });
     return;
+
+  } else {
+
+    response.writeHead(404, { 'Content-Type': 'text/html' });
+    response.write('<h1>This is not the page you should be looking for</h1>\n');
+    return response.end();
   }
 }
 
