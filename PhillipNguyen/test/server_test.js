@@ -6,6 +6,7 @@ const expect = chai.expect;
 const request = chai.request;
 const server = require(__dirname + '/../server');
 
+
 describe('HTTP Server', () => {
   it('should accept a GET request to /data', (done) => {
     request('localhost:3000')
@@ -20,11 +21,11 @@ describe('HTTP Server', () => {
   it('should log json content into file', (done) => {
     request('localhost:3000')
     .post('/data')
-    .send({ 'name': 'Phillip', 'occupation': 'student' })
+    .send({ 'name': 'Phil', 'occupation': 'student' })
     .end((err, res) => {
       expect(err).to.eql(null);
       expect(res).to.have.status(200);
-      expect(res.body.msg).to.eql('success');
+      expect(res.body.name).to.eql('Phil');
       done();
     });
   });
