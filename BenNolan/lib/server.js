@@ -2,9 +2,6 @@ const http = require('http');
 const fs = require('fs');
 const dir = __dirname + '/../notes';
 
-if (!fs.existsSync(dir)) {
- fs.mkdirSync(dir);
- }
 
 const server = module.exports = http.createServer((req, res) => {
   if (req.method === 'GET' && req.url === '/notes') {
