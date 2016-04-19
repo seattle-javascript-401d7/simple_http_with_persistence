@@ -25,18 +25,24 @@ describe('The HTTP server response', () => {
   });
 
   it('should recieve POST request as JSON', (done) => {
+    var nextFile = fs.readdirSync(__dirname + '/../notes').length + 1;
     request('localhost:3000')
     .post('/notes')
       .send({
         'hello': 'this is json'
       })
       .end((err, res) => {
-        expect(err).to.eql(null);
-        expect(res.status).to.eql(200);
-        expect(res.text).to.eql('file created');
-        done();
-      });
+      expect(err).to.eql(null);
+      expect(res.status).to.eql(200);
+      expect(res.text).to.eql('file created');
+        fs.readFile(__dirname + '/../notes/note_' + nextFile + '.json', (err, data) => {
+          if (err) throw err;
+          var parsed = JSON.parse(data);
+          expect(parsed).to.eql({ 'hello': 'this is json' });
+      done();
+    });
   });
+});
 
   it('should throw a 404 error on failure', (done) => {
     request('localhost:3000')
