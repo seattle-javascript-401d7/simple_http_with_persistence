@@ -1,23 +1,34 @@
 const http = require('http');
 const fs = require('fs');
-const dir = __dirname + '/../notes';
 
+function startServer(directory, cb) {
+  const dir = directory || __dirname + '/../notes';
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir);
+}
 
 const server = module.exports = http.createServer((req, res) => {
   if (req.method === 'GET' && req.url === '/notes') {
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
-    var files = fs.readdirSync(dir);
-    res.write(files.toString());
-    return res.end();
+    fs.readdir(dir, (err, files) => {
+      if (err) return process.stdout.write(err);
+      res.writeHead(200, { 'Content-Type': 'text/plain' });
+      res.write(files.toString());
+      res.end();
+    });
+    return;
   }
 
   if (req.method === 'POST' && req.url === '/notes') {
-    var nextFile = fs.readdirSync(dir).length + 1;
-    const text = fs.createWriteStream(__dirname + '/../notes/note_' + nextFile + '.txt');
-    req.pipe(text);
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.write('file created');
-    return res.end();
+    fs.readdir(dir, (err, files) => {
+      if (err) return process.stdout.write(err);
+      var nextFile = files.length + 1;
+      const writeToFile = fs.createWriteStream(dir + '/' + nextFile + '.json');
+        req.pipe(writeToFile);
+        res.writeHead(200, { 'Content-Type': 'text/plain' });
+        res.write('file created');
+        return res.end();
+      });
+      return;
   }
 
 
@@ -26,4 +37,12 @@ const server = module.exports = http.createServer((req, res) => {
   return res.end();
 });
 
-server.listen(3000, () => process.stdout.write('server up on 3000!'));
+server.listen(3000, () => {
+  process.stdout.write('server up\n');
+});
+
+if (cb && typeof cb === 'function') cb();
+return server;
+
+}
+module.exports = startServer;

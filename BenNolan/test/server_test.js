@@ -4,12 +4,12 @@ const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 const expect = chai.expect;
 const request = chai.request;
-const server = require(__dirname + '/../lib/server');
+const startServer = require(__dirname + '/../index');
 const dir = __dirname + '/../notes';
 
 describe('The server', () => {
   after((done) => {
-    server.close(() => {
+    startServer.close(() => {
       done();
     });
   });
@@ -37,6 +37,7 @@ describe('The server', () => {
   });
 
   it('Should accept POST requests from /notes', (done) => {
+    var nextFile = fs.readdirSync(__dirname + '/../notes').length + 1;
     request('localhost:3000')
     .post('/notes')
     .send({ 'Hello': 'from json' })
@@ -44,7 +45,12 @@ describe('The server', () => {
       expect(err).to.eql(null);
       expect(res.status).to.eql(200);
       expect(res.text).to.include('file created');
-      done();
+      fs.readFile(__dirname + '/../notes/' + nextFile + '.json', (err, data) => {
+        if (err) throw err;
+        var parsed = JSON.parse(data);
+        expect(parsed).to.eql({ 'Hello': 'from json' });
+        done();
+      });
     });
   });
 });
