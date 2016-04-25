@@ -4,8 +4,8 @@ const records = require(__dirname + '/records');
 const server = http.createServer( (req, res) => {
   if (req.method === 'GET' && req.url === '/records') {
     res.writeHead(200, { 'Content-Type': 'text/plain' } );
-    res.write(records.displayFiles());
-    return res.end();
+      records.displayFiles(res);
+      return;
   }
   if (req.method === 'POST' && req.url === '/records') {
     req.on('data', (data) => {

@@ -1,15 +1,28 @@
 const fs = require('fs');
 
 exports.write = function(newData) {
-  var numFiles = fs.readdirSync(__dirname + '/../data').length;
-  fs.writeFile(__dirname + '/../data/jsonFile' + (numFiles + 1) + '.json', newData);
+  var numFiles = 0;
+  fs.readdir(__dirname + '/../data', (err, files) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    numFiles = files.length;
+    fs.writeFile(__dirname + '/../data/jsonFile' + (numFiles + 1) + '.json', newData);
+  });
 };
 
-exports.displayFiles = function() {
-  var files = fs.readdirSync(__dirname + '/../data/');
+exports.displayFiles = function(res) {
   var string = '';
-  files.forEach( (cv, index, array) => {
-    string += cv + '\n';
+  fs.readdir(__dirname + '/../data/', (err, files) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    files.forEach( (file) => {
+      string += file + '\n';
+    });
+    res.write(string);
+    res.end();
   });
-  return string;
 };
