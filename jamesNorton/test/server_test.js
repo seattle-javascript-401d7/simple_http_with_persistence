@@ -6,14 +6,15 @@ const request = chai.request;
 const fs = require('fs');
 require(__dirname + '/../server');
 
-
 describe('Server Tests!', () => {
   var fileList;
-  var fileNumber;
+  var fileListString;
+  var testFileNumber;
 
   before(() => {
     fileList = fs.readdirSync(__dirname + '/../data/');
     testFileNumber = fileList.length + 2;
+    fileListString = fileList.join('\n');
   });
 
   it('should accept GET requests to /notes without error', (done) => {
@@ -22,6 +23,7 @@ describe('Server Tests!', () => {
     .end((err, res) => {
       expect(err).to.eql(null);
       expect(res).to.have.status(200);
+      expect(res.text).to.eql('Notes in the directory are \n' + fileListString + '\n');
       done();
     });
   });
@@ -29,13 +31,14 @@ describe('Server Tests!', () => {
   it('should make a POST request to /notes and generate new file', (done) => {
     request('localhost:3000')
     .post('/notes')
-    .send({ "name": "maverick"})
+    .send({ 'name': 'maverick' })
     .end((err, res) => {
       expect(err).to.eql(null);
       expect(res).to.have.status(200);
-      expect(res.text).to.eql('thanks for submitting! Your file is named ' + testFileNumber + '.json\n');
+      expect(res.text).to.eql(
+        'thanks for submitting! Your file is named ' + testFileNumber + '.json\n'
+      );
       done();
     });
   });
-
 });

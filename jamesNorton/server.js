@@ -4,26 +4,28 @@ const fs = require('fs');
 var server = http.createServer((req, res) => {
   if (req.method === 'GET' && req.url === '/notes') {
 
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    fs.readdir(__dirname + '/data/', (err, data) => {
+      if (err) throw console.log('Eror on GET request');
 
-    var fileList = fs.readdirSync(__dirname + '/data/');
-
-    var fileListString = fileList.join('\n');
-
-    res.write('Notes in the directory are \n' + fileListString + '\n');
-    return res.end();
+      res.writeHead(200, { 'Content-Type': 'text/plain' });
+      var fileListString = data.join('\n');
+      res.write('Notes in the directory are \n' + fileListString + '\n');
+      return res.end();
+    });
   }
 
   if (req.method === 'POST' && req.url === '/notes') {
-    fileList = fs.readdirSync(__dirname + '/data/');
-    var filenumber = fileList.length + 2;
 
-    var writeStream = fs.createWriteStream(__dirname + '/data/' + filenumber + '.json');
-    req.pipe(writeStream);
+     fs.readdir(__dirname + '/data/', (err, data) => {
+       if (err) console.log('Error on POST request');
 
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.write('thanks for submitting! Your file is named ' + filenumber + '.json\n');
-    return res.end();
+      var filenumber = data.length + 2;
+      var writeStream = fs.createWriteStream(__dirname + '/data/' + filenumber + '.json');
+      req.pipe(writeStream);
+      res.writeHead(200, { 'Content-Type': 'text/plain' });
+      res.write('thanks for submitting! Your file is named ' + filenumber + '.json\n');
+      return res.end();
+    });
   }
 });
 
