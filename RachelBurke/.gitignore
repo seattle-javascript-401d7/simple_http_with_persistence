@@ -1,1 +1,3 @@
-node_modules
+/simple/
+/simple_test/
+/node_modules/

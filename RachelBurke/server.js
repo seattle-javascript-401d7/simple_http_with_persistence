@@ -31,4 +31,4 @@ module.exports = exports = function startServer(directory, cb) {
   });
   if (cb && typeof cb === 'function') cb();
   return server;
-};
+}

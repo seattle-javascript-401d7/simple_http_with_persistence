@@ -5,7 +5,7 @@ chai.use(chaiHttp);
 const expect = chai.expect;
 const request = chai.request;
 const startServer = require(__dirname + '/../server');
-var server;
+var server = require(__dirname + '/../index');
 
 describe('the http server', () => {
   before((done) => {
@@ -13,13 +13,13 @@ describe('the http server', () => {
     server = startServer(testDir, done);
   });
 });
-it('should accept get requests to /notes and respond with list of notes', () => {
+it('should accept get requests to /simple and respond with list of simple', () => {
   request('localhost:3000')
     .get('/notes')
     .end((err, res) => {
       expect(err).to.eql(null);
       expect(res).to.have.status(200);
-      var files = fs.readdirSync(__dirname + '/../simpe_test').toString();
+      var files = fs.readdirSync(__dirname + '/../simple_test').toString();
       expect(res.text).to.eql(files);
       done();
     });
