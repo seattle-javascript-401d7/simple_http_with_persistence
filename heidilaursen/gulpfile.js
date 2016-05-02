@@ -25,7 +25,7 @@ gulp.task('lint:nontest', () => {
         'es6'
       ]
     }))
-    .pipe(eslint.format())
+    .pipe(eslint.format());
 });
 
 gulp.task('mocha', () => {

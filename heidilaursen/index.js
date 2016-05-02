@@ -1,1 +1,2 @@
-module.exports = require(__dirname + '/lib/server.js');
+const startServer = require(__dirname + '/lib/server');
+startServer(__dirname + '/files');

@@ -1,18 +1,33 @@
 const http = require('http');
-const Router = require(__dirname + '/lib/router');
+const fs = require('fs');
 
-var router = new Router()
-.get('/someurl', (req, res) => {
-  res.writeHead(200, {
-    'Content-Type': 'application/json'
+module.exports = exports = function startServer(directory, cb) {
+  const dir = directory || __dirname + '/files';
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir);
+  }
+  const server = http.createServer((req, res) => {
+    if (req.method === 'GET' && req.url === '/files') {
+      res.writeHead(200, { 'Content-Type': 'text/plain' });
+      var doc = fs.readdirSync(dir);
+      res.write(doc.toString());
+      return res.end();
+    }
+    if (req.method === 'POST' && req.url === '/files') {
+      var nextDoc = fs.readdirSync(dir).length + 1;
+      const writetoDoc = fs.createWriteStream(dir + '/' + nextDoc + '.json');
+      req.pipe(writetoDoc);
+      res.writeHead(200, { 'Content-Type': 'text/plain' });
+      res.write('json doc saved ' + nextDoc + '.json');
+      return res.end();
+    }
   });
-  res.write('{"msg" : "hello from some url"}');
-  res.end();
-})
-.get('/anotherurl', (req, res) => {
-  res.writeHead(200);
-  res.write('another url');
-  res.end();
-});
 
-http.createServer(router.route()).listen(3000, () => console.log('server up'));
+  server.listen('3000', () => {
+    process.stdout.write('server is up on port 3000');
+  });
+  if (cb && typeof cb === 'function') {
+    cb();
+    return server;
+  }
+};
