@@ -1,22 +1,33 @@
-var gulp = require('gulp');
-var mocha = require('gulp-mocha');
-var jshint = require('gulp-jshint');
-var startServer = require('./server.js').startServer;
+const gulp = require('gulp');
+const mocha = require('gulp-mocha');
+const eslint = require('gulp-eslint');
 
-gulp.task('default', ['eslint'], function() {});
+const files = ['server', 'index'];
 
-
-
-gulp.task('test', function() {
-  return gulp.src(['*.js', '*/*.js'])
-  .pipe(mocha)
+gulp.task('lint:test', () => {
+  return gulp.src('./test/**/*test.js')
+  .pipe(eslint({
+    envs: [
+      'mocha',
+      'es6'
+    ]
+  }))
+  .pipe(eslint.format());
 });
 
-gulp.task('eslint', function() {
-  return gulp.src(['*.js', '*/*.js'])
-    .pipe(eslint())
-    .pipe(eslint.reporter('jshint-stylish'));
+gulp.task('lint:nontest', () => {
+  return gulp.src(files)
+  .pipe(eslint({
+    envs: [
+      'es6'
+    ]
+  }))
+  .pipe(eslint.format());
 });
 
+gulp.task('mocha', () => {
+  return gulp.src('./test/**/*test.js')
+  .pipe(mocha());
+});
 
-gulp.watch(['*.js', 'test/*js'], ['test', 'eslint'], function() {});
+gulp.task('default', ['lint:test', 'lint:nontest', 'mocha']);

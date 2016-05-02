@@ -1,15 +1,21 @@
 {
-  "name": "",
+  "name": "rachel-burke",
   "version": "1.0.0",
-  "description": "HTTP Server with Persistence" ,
+  "description": "HTTP Server with Persistence",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "test"
   },
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^2.0.1",
     "eslint": "^2.8.0",
-    "mocha": "^2.4.5"
+    "gulp-eslint": "^2.0.0",
+    "gulp-mocha": "^2.2.0",
+    "mocha": "^2.4.5",
+    "superagent": "^1.8.3"
   }
 }

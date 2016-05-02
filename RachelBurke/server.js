@@ -1,54 +1,34 @@
-var http = require('http');
-var url = require('url');
-var fs = require('fs');
-var port = 3000;
+const http = require('http');
+const fs = require('fs');
 
-function startServer() {
-
-  function notFound404(request, response) {
-    response.writeHead(404, {'Content-Type': 'application/json'});
-    response.write('{"message": "Invalid Route"}');
-    response.end();
+module.exports = exports = function startServer(directory, cb) {
+  const dir = directory || __dirname + '/../simple';
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir);
   }
-
-  function onRequest(request, response) {
-    if(request.method === 'GET') {
-      if (request.url === '/' || request.url === '/index') {
-        response.writeHead(200, {'Content-Type': 'application/json'});
-        response.end();
-      } else if (request.url === '/data') {
-        response.writeHead(200, {'Content-Type': 'application/json'});
-        fs.readdir('./data', function(err, files) {
-          response.write(JSON.stringify(files));
-          response.end();
-        });
-      } else {
-        notFound404(request, response);
-      }
-      } else if (request.method === 'POST') {
-      if (request.url !== '/data') {
-        notFound404(request, response);
-      } else {
-
-        console.log(JSON.stringify(response.body));
-        response.on('data', function(chunk) {
-          console.log('BODY: ' + chunk);
-        });
-        //finds files from directory
-        fs.readdir('./data', function(err, files) {
-          var fileNum = files.length +1;
-          //builds new file name and writes post req data
-          fs.writeFile('data/file' + fileNum + '.json', request.body + function(err) {
-            if (err) throw err;
-            console.log('It saved!');
-          });
-        });
-      }
+  const server = http.createServer((req, res) => {
+    if (req.method === 'GET' && req.url === '/simple') {
+      res.writeHead(200, { 'Content-Type': 'text/plain' });
+      var files = fs.readdirSync(dir);
+      res.write(files.toString());
+      return res.end();
     }
-  }
+    if (req.method === 'POST' && req.url === '/simple') {
+      var nextFile = fs.readdirSync(dir).length + 1;
+      const writeToFile = fs.createWriteStream(dir + '/' + nextFile + '.json');
+      req.pipe(writeToFile);
+      res.writeHead(200, { 'Content-Type': 'text/plain' });
+      res.write('saved file ' + nextFile + '.json');
+      return res.end();
+    }
+    res.writeHead(404, { 'Content-Type': 'text/plain' });
+    res.write('404 - Page not found');
+    return res.end();
+  });
 
-  http.createServer(onRequest).listen(port);
-  console.log('Server up on port 3000');
-}
-
-exports.startServer = startServer;
+  server.listen('3000', () => {
+    process.stdout.write('server up\n');
+  });
+  if (cb && typeof cb === 'function') cb();
+  return server;
+};
