@@ -14,6 +14,7 @@ describe('test http server with persistence', () => {
       console.log(data);
     });
   });
+
   it('should run GET request', (done) => {
     request('localhost:3000')
     .get('/list')
@@ -21,6 +22,7 @@ describe('test http server with persistence', () => {
       expect(err).to.eql(null);
       expect(res).to.have.status(200);
       done();
+      server.close();
     });
   });
   it('should check POST request and return a JSON file', (done) => {
@@ -31,10 +33,10 @@ describe('test http server with persistence', () => {
       expect(err).to.eql(null);
       expect(res).to.have.status(200);
       expect(res.text).to.eql('{"msg": "test"}');
+      console.log("Successfully sent " + jsonString);
+      console.log("Response status: " + res.status);
       done();
+      server.close();
     });
-  });
-  after(() => {
-    server.close();
   });
 });
