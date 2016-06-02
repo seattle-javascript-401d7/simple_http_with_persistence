@@ -32,7 +32,7 @@ describe('test http server with persistence', () => {
     .end((err, res) => {
       expect(err).to.eql(null);
       expect(res).to.have.status(200);
-      //expect(res.text).to.eql('{"msg": "test"}');
+      expect(res.text).to.eql('{"msg": "test"}');
       expect(res.body).to.not.eql(null);
       done();
       server.close();
