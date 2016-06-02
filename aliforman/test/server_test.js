@@ -12,13 +12,13 @@ describe('test GET & POST request', () => {
   before(() => {
     fs.readdir('/data/', (err, data) => {
       greetList = data.length;
-      if (err) return 'Error has occurred.';
+      if (err) return 'Error';
       console.log(greetList);
     });
   });
   it('should have GET request from single resource', (done) => {
     request('localhost:3000')
-    .get('/greet')
+    .get('/')
     .end((err, res) => {
       expect(err).to.eql(null);
       expect(res).to.have.status(200);
@@ -40,7 +40,7 @@ describe('test GET & POST request', () => {
   it('Check if .json files are same as current list ', (done) => {
     after(() => {
       fs.readdir('/data/', (err, data) => {
-        if (err) return 'Error has occurred.';
+        if (err) return 'Error';
         expect(data.length).to.eql(greetList);
       });
     });

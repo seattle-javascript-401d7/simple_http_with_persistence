@@ -9,7 +9,7 @@
 - Type 'localhost:3000/greet/list' will display list of the post requests .json files in the data folder.
 
 ##Testing
-- mocha
+- Type 'gulp' to run all tests.  It should pass three tests.
 - gulp.watch - will test ('./test/**/*test.js', ['lint:test', 'mochaTest']) and (files, ['lint:nontest', 'mochaTest'])
 - gulp.lint will test ['lint:test', 'lint:nontest'])
 - gulp.mochaTest will test ['mocha:test'])
