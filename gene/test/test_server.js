@@ -1,5 +1,4 @@
 const chai = require('chai');
-const path = require('path');
 require(__dirname + '/../lib/server');
 const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
@@ -15,7 +14,7 @@ describe('simple http server', () => {
       .end((err, res) => {
         expect(err).to.eql(null);
         expect(res).to.have.status(200);
-        var exists = fs.existsSync(path.join(__dirname, '..', 'data', 'notes1.json'));//eslint-disable-line
+        var exists = fs.existsSync((__dirname + '/../data/notes1.json'));//eslint-disable-line
         expect(exists).to.eql(true);
         done();
       });
