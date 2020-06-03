@@ -1,0 +1,36 @@
+{
+  "name": "heidilaursen",
+  "version": "1.0.0",
+  "description": "simple http server with persistence",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pnwlady/simple_http_with_persistence.git"
+  },
+  "keywords": [
+    "http",
+    "persistence",
+    "server"
+  ],
+  "author": "heidi laursen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pnwlady/simple_http_with_persistence/issues"
+  },
+  "homepage": "https://github.com/pnwlady/simple_http_with_persistence#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^2.0.1",
+    "gulp": "^3.9.1",
+    "gulp-eslint": "^2.0.0",
+    "gulp-mocha": "^2.2.0",
+    "mocha": "^2.4.5",
+    "superagent-cli": "^2.1.0"
+  }
+}
